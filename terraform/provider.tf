@@ -6,5 +6,4 @@ provider "aws" {
     }
   }
 
-  
 }

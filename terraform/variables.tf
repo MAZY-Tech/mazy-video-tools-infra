@@ -1,3 +1,8 @@
+variable "project" {
+  type    = string
+  default = "mazy-video-tools"
+}
+
 variable "region" {
   description = "AWS region"
   type        = string
