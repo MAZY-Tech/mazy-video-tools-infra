@@ -28,6 +28,11 @@ variable "backend_url" {
   type        = string
 }
 
+variable "mongodb_uri" {
+  description = "URI for MongoDB connection"
+  type        = string
+}
+
 variable "callback_urls" {
   description = "List of allowed callback URLs for Cognito Hosted UI"
   type        = list(string)

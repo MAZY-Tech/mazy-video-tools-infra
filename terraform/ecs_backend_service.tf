@@ -2,7 +2,8 @@ locals {
   container_env_backend = [
     { name = "AWS_REGION", value = var.region },
     { name = "UPLOAD_BUCKET_NAME", value = var.upload_bucket_name },
-    { name = "COGNITO_ISSUER_URI", value = local.cognito_issuer_uri }
+    { name = "COGNITO_ISSUER_URI", value = local.cognito_issuer_uri },
+    { name = "MONGODB_URI", value = var.mongodb_uri }
   ]
 }
 
