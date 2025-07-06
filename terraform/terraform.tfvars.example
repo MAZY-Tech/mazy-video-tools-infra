@@ -22,4 +22,3 @@ certificate_sans = [
 api_sentry_dsn = ""
 
 frontend_sentry_dsn = ""
-frontend_sentry_auth_token = ""

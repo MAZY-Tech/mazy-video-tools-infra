@@ -64,8 +64,7 @@ jobs:
           "certificate_primary": "${{ vars.CERTIFICATE_PRIMARY }}",
           "certificate_sans": ${{ vars.CERTIFICATE_SANS }},
           "api_sentry_dsn": "${{ secrets.API_SENTRY_DSN }}",
-          "frontend_sentry_dsn": "${{ secrets.FRONTEND_SENTRY_DSN }}",
-          "frontend_sentry_auth_token": "${{ secrets.FRONTEND_SENTRY_AUTH_TOKEN }}"
+          "frontend_sentry_dsn": "${{ secrets.FRONTEND_SENTRY_DSN }}"
         }
         EOF
 

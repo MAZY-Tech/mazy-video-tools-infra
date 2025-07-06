@@ -79,9 +79,3 @@ variable "frontend_sentry_dsn" {
   description = "Sentry DSN for frontend service"
   sensitive   = true
 }
-
-variable "frontend_sentry_auth_token" {
-  type        = string
-  description = "Sentry auth token for frontend service"
-  sensitive   = true
-}
