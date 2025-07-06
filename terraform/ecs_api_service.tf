@@ -19,7 +19,7 @@ resource "aws_ecs_task_definition" "api" {
 
   container_definitions = jsonencode([
     {
-      name      = "mazy-video-tools"
+      name      = "mazy-video-tools-api"
       image     = "${aws_ecr_repository.api.repository_url}:latest"
       essential = true
       portMappings = [
