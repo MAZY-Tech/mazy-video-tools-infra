@@ -8,8 +8,8 @@ resource "aws_lb" "alb" {
 }
 
 # Target Groups
-resource "aws_lb_target_group" "backend_tg" {
-  name        = "mazy-video-tools-tg"
+resource "aws_lb_target_group" "api_tg" {
+  name        = "mazy-video-tools-api-tg"
   port        = 8080
   protocol    = "HTTP"
   vpc_id      = aws_vpc.main.id
@@ -68,19 +68,19 @@ resource "aws_lb_listener_rule" "frontend_rule" {
   }
 }
 
-resource "aws_lb_listener_rule" "backend_rule" {
+resource "aws_lb_listener_rule" "api_rule" {
   listener_arn = aws_lb_listener.https.arn
   priority     = 100
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.backend_tg.arn
+    target_group_arn = aws_lb_target_group.api_tg.arn
   }
 
   condition {
     host_header {
       values = [
-        "backend.mazyvideo.taykar.us",
+        "api.mazyvideo.taykar.us",
       ]
     }
   }

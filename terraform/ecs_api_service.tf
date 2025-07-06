@@ -1,14 +1,15 @@
 locals {
-  container_env_backend = [
+  container_env_api = [
     { name = "AWS_REGION", value = var.region },
     { name = "UPLOAD_BUCKET_NAME", value = var.upload_bucket_name },
     { name = "COGNITO_ISSUER_URI", value = local.cognito_issuer_uri },
-    { name = "MONGODB_URI", value = var.mongodb_uri }
+    { name = "MONGODB_URI", value = var.mongodb_uri },
+    { name = "SENTRY_DSN", value = var.api_sentry_dsn },
   ]
 }
 
-resource "aws_ecs_task_definition" "backend" {
-  family                   = "mazy-video-tools"
+resource "aws_ecs_task_definition" "api" {
+  family                   = "mazy-video-tools-api"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = 512
@@ -18,8 +19,8 @@ resource "aws_ecs_task_definition" "backend" {
 
   container_definitions = jsonencode([
     {
-      name      = "mazy-video-tools"
-      image     = "${aws_ecr_repository.backend.repository_url}:latest"
+      name      = "mazy-video-tools-api"
+      image     = "${aws_ecr_repository.api.repository_url}:latest"
       essential = true
       portMappings = [
         {
@@ -28,13 +29,13 @@ resource "aws_ecs_task_definition" "backend" {
           hostPort      = 8080
         }
       ]
-      environment = local.container_env_backend
+      environment = local.container_env_api
       logConfiguration = {
         logDriver = "awslogs"
         options = {
-          awslogs-group         = aws_cloudwatch_log_group.backend.name
+          awslogs-group         = aws_cloudwatch_log_group.api.name
           awslogs-region        = var.region
-          awslogs-stream-prefix = "backend"
+          awslogs-stream-prefix = "api"
         }
       }
     }
@@ -46,11 +47,11 @@ resource "aws_ecs_task_definition" "backend" {
   }
 }
 
-resource "aws_ecs_service" "backend" {
-  name            = "mazy-video-tools"
+resource "aws_ecs_service" "api" {
+  name            = "mazy-video-tools-api"
   cluster         = aws_ecs_cluster.main.id
   desired_count   = 1
-  task_definition = aws_ecs_task_definition.backend.arn
+  task_definition = aws_ecs_task_definition.api.arn
 
   network_configuration {
     subnets          = aws_subnet.private[*].id
@@ -59,8 +60,8 @@ resource "aws_ecs_service" "backend" {
   }
 
   load_balancer {
-    target_group_arn = aws_lb_target_group.backend_tg.arn
-    container_name   = "mazy-video-tools"
+    target_group_arn = aws_lb_target_group.api_tg.arn
+    container_name   = "mazy-video-tools-api"
     container_port   = 8080
   }
 

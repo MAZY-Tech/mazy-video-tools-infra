@@ -6,6 +6,7 @@ variable "project" {
 variable "region" {
   description = "AWS region"
   type        = string
+  default     = "us-east-1"
 }
 
 variable "upload_bucket_name" {
@@ -16,21 +17,24 @@ variable "upload_bucket_name" {
 variable "vpc_cidr" {
   description = "CIDR for VPC"
   type        = string
+  default     = "10.0.0.0/16"
 }
 
 variable "allowed_ingress_cidr" {
   description = "CIDR allowed to access ALB"
   type        = string
+  default     = "0.0.0.0/0"
 }
 
-variable "backend_url" {
-  description = "URL for backend API exposed to frontend"
+variable "api_url" {
+  description = "URL for API exposed to frontend"
   type        = string
 }
 
 variable "mongodb_uri" {
   description = "URI for MongoDB connection"
   type        = string
+  sensitive   = true
 }
 
 variable "callback_urls" {
@@ -51,6 +55,7 @@ variable "nextauth_url" {
 variable "nextauth_secret" {
   description = "Secret do NextAuth (JWT)"
   type        = string
+  sensitive   = true
 }
 
 variable "certificate_primary" {
@@ -61,4 +66,22 @@ variable "certificate_primary" {
 variable "certificate_sans" {
   description = "Subject Alternative Names (additional subdomains)"
   type        = list(string)
+}
+
+variable "api_sentry_dsn" {
+  type        = string
+  description = "Sentry DSN for API service"
+  sensitive   = true
+}
+
+variable "frontend_sentry_dsn" {
+  type        = string
+  description = "Sentry DSN for frontend service"
+  sensitive   = true
+}
+
+variable "frontend_sentry_auth_token" {
+  type        = string
+  description = "Sentry auth token for frontend service"
+  sensitive   = true
 }
