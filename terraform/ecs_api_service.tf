@@ -9,7 +9,7 @@ locals {
 }
 
 resource "aws_ecs_task_definition" "api" {
-  family                   = "mazy-video-tools"
+  family                   = "mazy-video-tools-api"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = 512
