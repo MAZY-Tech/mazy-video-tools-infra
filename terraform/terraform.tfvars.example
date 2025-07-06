@@ -1,7 +1,4 @@
-region             = "us-east-1"
 upload_bucket_name = "upload-bucket-name"
-vpc_cidr           = "10.0.0.0/16"
-allowed_ingress_cidr = "0.0.0.0/0"
 
 api_url = "http://localhost:3000"
 

@@ -6,6 +6,7 @@ variable "project" {
 variable "region" {
   description = "AWS region"
   type        = string
+  default     = "us-east-1"
 }
 
 variable "upload_bucket_name" {
@@ -16,11 +17,13 @@ variable "upload_bucket_name" {
 variable "vpc_cidr" {
   description = "CIDR for VPC"
   type        = string
+  default     = "10.0.0.0/16"
 }
 
 variable "allowed_ingress_cidr" {
   description = "CIDR allowed to access ALB"
   type        = string
+  default     = "0.0.0.0/0"
 }
 
 variable "api_url" {
