@@ -9,8 +9,7 @@ locals {
     { name = "COGNITO_DOMAIN", value = aws_cognito_user_pool_domain.domain.domain },
     { name = "COGNITO_ISSUER", value = local.cognito_issuer_uri },
     { name = "AWS_REGION", value = var.region },
-    { name = "SENTRY_DSN", value = var.frontend_sentry_dsn },
-    { name = "SENTRY_AUTH_TOKEN", value = var.frontend_sentry_auth_token },
+    { name = "SENTRY_DSN", value = var.frontend_sentry_dsn }
   ]
 }
 
