@@ -65,13 +65,13 @@ variable "certificate_sans" {
   type        = list(string)
 }
 
-variable "api_sentry_dns" {
+variable "api_sentry_dsn" {
   type        = string
   description = "Sentry DSN for API service"
   sensitive   = true
 }
 
-variable "frontend_sentry_dns" {
+variable "frontend_sentry_dsn" {
   type        = string
   description = "Sentry DSN for frontend service"
   sensitive   = true

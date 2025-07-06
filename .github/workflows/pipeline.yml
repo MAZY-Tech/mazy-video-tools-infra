@@ -1,0 +1,86 @@
+name: Terraform Apply
+
+on:
+  push:
+    branches:
+    - main
+    paths:
+    - terraform/**
+  pull_request:
+    branches:
+    - main
+    paths:
+    - terraform/**
+  workflow_dispatch:
+
+
+env:
+  TF_LOG: INFO
+  AWS_REGION: ${{ vars.AWS_REGION }}
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./terraform
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Terraform Setup
+      uses: hashicorp/setup-terraform@v3
+
+    - name: Terraform Init
+      id: init
+      run: |
+        terraform init \
+          -backend-config="bucket=${{ vars.BUCKET_TF_STATE }}" \
+          -backend-config="key=${{ vars.BUCKET_TF_STATE_KEY }}" \
+          -backend-config="region=${{ env.AWS_REGION }}" \
+          -backend-config="encrypt=true"
+
+    - name: Create .tfvars.json file
+      run: |
+        cat <<EOF > terraform.tfvars.json
+        {
+          "upload_bucket_name": "${{ vars.UPLOAD_BUCKET_NAME }}",
+          "api_url": "${{ vars.API_URL }}",
+          "mongodb_uri": "${{ secrets.MONGODB_URI }}",
+          "callback_urls": ${{ vars.CALLBACK_URLS }},
+          "logout_urls": ${{ vars.LOGOUT_URLS }},
+          "nextauth_url": "${{ vars.NEXTAUTH_URL }}",
+          "nextauth_secret": "${{ secrets.NEXTAUTH_SECRET }}",
+          "certificate_primary": "${{ vars.CERTIFICATE_PRIMARY }}",
+          "certificate_sans": ${{ vars.CERTIFICATE_SANS }},
+          "api_sentry_dns": "${{ secrets.API_SENTRY_DNS }}",
+          "frontend_sentry_dns": "${{ secrets.FRONTEND_SENTRY_DNS }}",
+          "frontend_sentry_auth_token": "${{ secrets.FRONTEND_SENTRY_AUTH_TOKEN }}"
+        }
+        EOF
+
+    - name: Terraform Format
+      id: fmt
+      run: terraform fmt -check
+
+    - name: Terraform Validate
+      id: validate
+      run: terraform validate
+
+    - name: Terraform Plan
+      id: plan
+      run: terraform plan -no-color -out=tfplan -var-file="terraform.tfvars.json"
+
+    - name: Terraform Apply
+      if: (github.ref == 'refs/heads/main' && github.event_name == 'push') || github.event_name == 'workflow_dispatch'
+      run: terraform apply -auto-approve tfplan
