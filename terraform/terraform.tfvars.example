@@ -19,5 +19,10 @@ nextauth_secret = ""
 certificate_primary = "primary.domain"
 certificate_sans = [
   "frontend.primary.domain",
-  "api.primary.domain",
+  "api.primary.domain"
 ]
+
+api_sentry_dsn = ""
+
+frontend_sentry_dsn = ""
+frontend_sentry_auth_token = ""
