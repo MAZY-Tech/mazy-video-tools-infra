@@ -1,6 +1,6 @@
 locals {
   container_env_frontend = [
-    { name = "BACKEND_URL", value = var.backend_url },
+    { name = "API_URL", value = var.api_url },
     { name = "NEXTAUTH_URL", value = var.nextauth_url },
     { name = "NEXTAUTH_SECRET", value = var.nextauth_secret },
     { name = "COGNITO_USER_POOL_ID", value = aws_cognito_user_pool.users.id },
@@ -8,7 +8,9 @@ locals {
     { name = "COGNITO_CLIENT_SECRET", value = aws_cognito_user_pool_client.frontend.client_secret },
     { name = "COGNITO_DOMAIN", value = aws_cognito_user_pool_domain.domain.domain },
     { name = "COGNITO_ISSUER", value = local.cognito_issuer_uri },
-    { name = "AWS_REGION", value = var.region }
+    { name = "AWS_REGION", value = var.region },
+    { name = "SENTRY_DSN", value = var.frontend_sentry_dsn },
+    { name = "SENTRY_AUTH_TOKEN", value = var.frontend_sentry_auth_token },
   ]
 }
 

@@ -3,7 +3,7 @@ upload_bucket_name = "upload-bucket-name"
 vpc_cidr           = "10.0.0.0/16"
 allowed_ingress_cidr = "0.0.0.0/0"
 
-backend_url = "http://localhost:3000"
+api_url = "http://localhost:3000"
 
 callback_urls = [
   "http://localhost:3000/api/auth/callback/cognito"
@@ -19,5 +19,5 @@ nextauth_secret = ""
 certificate_primary = "primary.domain"
 certificate_sans = [
   "frontend.primary.domain",
-  "backend.primary.domain",
+  "api.primary.domain",
 ]
